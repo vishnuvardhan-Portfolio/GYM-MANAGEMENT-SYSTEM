@@ -1,0 +1,59 @@
+**Database Name: gymsysdb**
+
+**Recommended PHP Version 5.6.3 and 7.4.12**
+
+
+**Admin Login Details**
+
+Username: admin
+Password: password
+
+
+
+
+
+
+
+<?php
+// Include the PHPMailer classes
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
+
+// Include the Composer autoloader (if you're using Composer)
+require 'vendor/autoload.php';
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Initialize PHPMailer
+    $mail = new PHPMailer(true);
+
+    try {
+        //Server settings
+        $mail->isSMTP();
+        $mail->Host = 'smtp.example.com'; // Set your SMTP server (e.g., 'smtp.gmail.com' for Gmail)
+        $mail->SMTPAuth = true;
+        $mail->Username = 'your_email@example.com'; // Your email address
+        $mail->Password = 'your_email_password'; // Your email password
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port = 587; // SMTP port (usually 587 for TLS)
+
+        //Recipients
+        $mail->setFrom('no-reply@example.com', 'Reminder Service'); // From email and name
+        $mail->addAddress('recipient@example.com', 'Recipient Name'); // To email and name
+
+        // Content
+        $mail->isHTML(true); // Enable HTML content
+        $mail->Subject = 'Reminder Notification';
+        $mail->Body    = 'This is a reminder triggered by the user action.';
+
+        // Send the email
+        if ($mail->send()) {
+            echo 'Reminder email has been sent!';
+        } else {
+            echo 'Failed to send the reminder email.';
+        }
+
+    } catch (Exception $e) {
+        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+    }
+}
+?>
